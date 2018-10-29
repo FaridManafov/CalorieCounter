@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import { listenerCount } from 'cluster';
+// import { listenerCount } from 'cluster';
+import Foods from './Components/Foods.jsx'
+
 const axios = require('axios')
 const api_key = process.env.API_KEY
 
@@ -10,14 +12,18 @@ class App extends Component {
     super(props)
 
     this.state = {
-      querySearch = '',
+      querySearch: '',
       results: []
     }
   }
 
   handleInputChange = () => {
     this.setState = ({
-      query = this.search.value
+      query: this.search.value
+    }, () => {
+      if (this.state.query && this.state.query.length > 1) {
+        this.getInfo()
+      }
     })
   }
 
@@ -25,7 +31,7 @@ class App extends Component {
     axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${this.state.query}&sort=n&max=5&offset=0&api_key=${api_key}`)
     .then(({ data }) => {
       this.setState({
-        results: data.item.name
+        results: data.list.item.name
       })
     })
   }
@@ -41,9 +47,7 @@ class App extends Component {
         ref={input => this.search = input}
         onChange={this.handleInputChange}
         />
-        <p>
-          {this.state.query}
-        </p>
+        <Foods results={this.state.results} />
       </form>
     );
   }
