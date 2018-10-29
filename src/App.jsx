@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-// import { listenerCount } from 'cluster';
 import Foods from './Components/Foods.jsx'
+import apiKey from './apikey'
 
 const axios = require('axios')
-const api_key = process.env.API_KEY
 
 class App extends Component {
 
@@ -22,19 +21,21 @@ class App extends Component {
       query: this.search.value
     }, () => {
       if (this.state.query && this.state.query.length > 1) {
-        this.getInfo()
+        if (this.state.query.length %2 === 0) {
+          this.getInfo()
+        }
       }
     })
   }
-
+  
   getInfo = () => {
-    axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${this.state.query}&sort=n&max=5&offset=0&api_key=${api_key}`)
-    .then(( data ) => {
-      return data.json()
-    })
+    axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${this.state.query}&sort=n&max=5&offset=0&api_key=${apiKey.api_key}`)
+    // .then((data ) => {
+    //   return data.json()
+    // })
 
     .then((data) => {
-      console.log(JSON.parse(data))
+      console.log(data)
     })
     
     .then(( data ) => {
@@ -48,6 +49,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getInfo()
   }
 
   render() {
