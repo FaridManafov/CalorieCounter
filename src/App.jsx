@@ -27,25 +27,24 @@ class App extends Component {
       }
     })
   }
-  
+  // ${ this.state.query }
   getInfo = () => {
-    axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${this.state.query}&sort=n&max=5&offset=0&api_key=${apiKey.api_key}`)
-    // .then((data ) => {
-    //   return data.json()
-    // })
+    axios
+      .get(`http://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${apiKey.api_key}&areola&nutrients=208&max=5`)
+      // .then((data ) => {
+      //   return data.json()
+      // })
 
-    .then((data) => {
-      console.log(data)
-    })
-    
-    .then(( data ) => {
-      this.setState({
-        results: data.list.item.name
+      .then(data => {
+        console.log(data);
       })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+
+      .then(data => {
+        this.setState({ results: data.list.item.name });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   componentDidMount() {
