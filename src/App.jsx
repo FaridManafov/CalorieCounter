@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
 import './App.css';
+import { listenerCount } from 'cluster';
 const axios = require('axios')
+const api_key = process.env.API_KEY
 
 class App extends Component {
 
   constructor(props){
     super(props)
+
     this.state = {
-      list = {
-        food = "",
-        totalCalories = ""
-      }
+      querySearch = '',
+      results: []
     }
+  }
+
+  handleInputChange = () => {
+    this.setState = ({
+      query = this.search.value
+    })
+  }
+
+  getInfo = () => {
+    axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${this.state.query}&sort=n&max=5&offset=0&api_key=${api_key}`)
+    .then(({ data }) => {
+      this.setState({
+        results: data.item.name
+      })
+    })
   }
 
   componentDidMount() {
@@ -20,24 +36,15 @@ class App extends Component {
 
   render() {
     return (
-      <input type="text" className="search" placeholder="Search"></input>
-      
-      // <div className="App">
-      //   <header className="App-header">
-      //     <img src={logo} className="App-logo" alt="logo" />
-      //     <p>
-      //       Edit <code>src/App.js</code> and save to reload.
-      //     </p>
-      //     <a
-      //       className="App-link"
-      //       href="https://reactjs.org"
-      //       target="_blank"
-      //       rel="noopener noreferrer"
-      //     >
-      //       Learn React
-      //     </a>
-      //   </header>
-      // </div>
+      <form>
+        <input placeholder = "Search"
+        ref={input => this.search = input}
+        onChange={this.handleInputChange}
+        />
+        <p>
+          {this.state.query}
+        </p>
+      </form>
     );
   }
 }
