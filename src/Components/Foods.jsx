@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Foods = (props) => {
-  const options = props.results.map(r => (
+  const options = props.resultsName.map(r => (
     <li key={r.id}>
     {r.name}
     </li>

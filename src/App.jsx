@@ -12,7 +12,8 @@ class App extends Component {
 
     this.state = {
       querySearch: '',
-      results: []
+      resultsName: [],
+      resultsKcal: []
     }
   }
 
@@ -30,7 +31,7 @@ class App extends Component {
   // ${ this.state.query }
   getInfo = () => {
     axios
-      .get(`http://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${apiKey.api_key}&areola&nutrients=208&max=5`)
+      .get(`http://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${apiKey.api_key}&name=${this.state.query}&nutrients=208&max=5`)
       // .then((data ) => {
       //   return data.json()
       // })
@@ -40,7 +41,10 @@ class App extends Component {
       })
 
       .then(data => {
-        this.setState({ results: data.list.item.name });
+        data.report.foods.forEach(element => {
+          this.setState({ resultsName: element.name });
+          this.setState({ resultsKcal: element.nutrients[3] });
+        });
       })
       .catch(err => {
         console.log(err);
@@ -58,7 +62,9 @@ class App extends Component {
         ref={input => this.search = input}
         onChange={this.handleInputChange}
         />
-        <Foods results={this.state.results} />
+        <Foods 
+          resultsName={this.state.resultsName}
+          />
       </form>
     );
   }
