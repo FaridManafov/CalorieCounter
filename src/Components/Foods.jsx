@@ -21,6 +21,7 @@ const Foods = (props) => {
           <tr>
             <th>Food</th>
             <th>Calories (measured in Kcal)</th>
+            <th>Add to List</th>
           </tr>
           <tr>
             <td>{foodNames}</td>
