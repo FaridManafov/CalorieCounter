@@ -5,6 +5,9 @@ import apiKey from './apikey'
 
 const axios = require('axios')
 
+let workerArrayName = []
+let workerArrayKcal = []
+
 class App extends Component {
 
   constructor(props){
@@ -29,30 +32,37 @@ class App extends Component {
     })
   }
   // ${ this.state.query }
-  getInfo = () => {
+
+  componentDidMount() {
+
     axios
       .get(`http://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${apiKey.api_key}&name=${this.state.query}&nutrients=208&max=5`)
-      // .then((data ) => {
+      // .then(( data ) => {
       //   return data.json()
       // })
 
-      .then(data => {
-        console.log(data);
-      })
+      // .then(data => {
+      //   data.data.report.foods.forEach((element) => {
+      //     console.log(element.name)
+      //     console.log(element.nutrients[0].value)
+      //   });
+      // })
 
       .then(data => {
-        data.report.foods.forEach(element => {
-          this.setState({ resultsName: element.name });
-          this.setState({ resultsKcal: element.nutrients[3] });
+        console.log(data)
+        data.data.report.foods.forEach(element => {
+          workerArrayName.push(element.name)
+          workerArrayKcal.push(element.nutrients[0].value)
+          console.log(workerArrayName);
+          console.log(workerArrayKcal);
         });
+        this.setState({ resultsName: [...this.state.resultsName, workerArrayName] });
+        this.setState({ resultsKcal: [...this.state.resultsKcal, workerArrayKcal] });
       })
       .catch(err => {
         console.log(err);
       });
-  }
-
-  componentDidMount() {
-    this.getInfo()
+      // this.getInfo()
   }
 
   render() {
@@ -68,6 +78,7 @@ class App extends Component {
       </form>
     );
   }
+
 }
 
 export default App;
