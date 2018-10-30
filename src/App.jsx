@@ -50,9 +50,10 @@ class App extends Component {
 
   handleInputChange = (e) => {
     let input = e.target.value
-    this.setState({querySearch: input})
-    console.log(input)
-    // console.log(e)
+    const results = this.state.resultsName[0].filter(foodName => {
+      return foodName.toLowerCase().indexOf(input.toLowerCase()) > -1
+    })
+    console.log(results, "resultsfilter")
   }
 
   render() {
