@@ -1,22 +1,28 @@
-import React from 'react'
+import React from "react";
 
-const Foods = (props) => {
-  console.log(props, "Foods")
-  if (!props.resultsName[0] || !props.resultsKcal || props.resultsName[0] === undefined || props.resultsKcal[0] === undefined) {
-
+const Foods = props => {
+  console.log(props, "props");
+  if (
+    !props.resultsName[0] ||
+    !props.resultsKcal ||
+    props.resultsName[0] === undefined ||
+    props.resultsKcal[0] === undefined
+  ) {
     return <h1>Loading</h1>;
-
   } else {
-
-    let foodNames = props.resultsName[0].map(element => (
-      <li>{element}</li>
+    let foodNames = props.resultsName[0].map((element, indx) => (
+      <tr>
+        <td>{element}</td>
+        <td>{props.resultsKcal[0][indx]}</td>
+      </tr>
     ));
-    
-    let foodKcal = props.resultsKcal[0].map(element => (
-      <li>{element}</li>
-    ))
 
-    return <table>
+    // let foodKcal = props.resultsKcal[0].map(element => (
+    //   <li>{element}</li>
+    // ))
+
+    return (
+      <table>
         <tbody>
           <tr>
             <th>Food</th>
@@ -24,13 +30,13 @@ const Foods = (props) => {
             <th>Add to List</th>
           </tr>
           <tr>
-            <td>{foodNames}</td>
-            <td>{foodKcal}</td>
+            {foodNames}
+            {/* <td>{foodKcal}</td> */}
           </tr>
         </tbody>
-      </table>;
-
+      </table>
+    );
   }
-}
+};
 
-export default Foods
+export default Foods;
